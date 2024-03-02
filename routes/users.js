@@ -5,17 +5,10 @@ const { ObjectId } = require("mongodb")
 
 
 let user = express.Router();
-
-
 let app = express();
 app.use(cors());
 app.use(express.json());
-
-
-
 let db;
-
-
 
 
 
@@ -27,10 +20,6 @@ connectToDb((err) => {
         db = getDb();
     }
 })
-
-
-
-
 
 
 user.get('/', (req, res) => {
@@ -50,8 +39,6 @@ user.get('/', (req, res) => {
 })
 
 
-
-
 // count all users
 user.get('/countAllUsers', (req, res) => {
 
@@ -67,9 +54,6 @@ user.get('/countAllUsers', (req, res) => {
             res.status(500).json({ error: "not fetch the file" })
         })
 })
-
-
-
 
 
 user.get('/:id', (req, res) => {
@@ -90,15 +74,11 @@ user.get('/:id', (req, res) => {
     else {
         res.status(500).json({ error: "Not a valid doc id" })
     }
-
 })
-
-
 
 
 // user forget password
 user.get('/forgetPassword/:Email', (req, res) => {
-
 
     db.collection('users')
         .findOne({ Email: req.params.Email })
@@ -109,16 +89,11 @@ user.get('/forgetPassword/:Email', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
-
 })
-
-
-
 
 
 // find login for register if have this login , user cant register
 user.get('/FindLogin/:Login', (req, res) => {
-
 
     db.collection('users')
         .findOne({ Login: req.params.Login })
@@ -133,12 +108,8 @@ user.get('/FindLogin/:Login', (req, res) => {
 })
 
 
-
-
-
 // here delete user id
 user.delete('/:id', (req, res) => {
-
 
     if (ObjectId.isValid(req.params.id)) {
 
@@ -152,23 +123,17 @@ user.delete('/:id', (req, res) => {
                 res.status(500).json({ error: "not fetch the file" })
             })
     }
-
     else {
         res.status(500).json({ error: "Not a valid doc id" })
     }
 })
 
 
-
-
-
 // connect login user or doctor,admin
 user.post('/login', (req, res) => {
 
-
     let Login = req.body.Login
     let Password = req.body.Password
-
 
     db.collection('users')
         .findOne({ Login: Login, Password: Password })
@@ -179,19 +144,13 @@ user.post('/login', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
-
-
 })
-
-
 
 
 // if user forget oassword , connect with email to change password
 user.post('/Forget', (req, res) => {
 
-
     let Email = req.body.Email
-
 
     db.collection('users')
         .findOne({ Email: Email })
@@ -202,11 +161,7 @@ user.post('/Forget', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
-
-
 })
-
-
 
 
 // add new users
@@ -224,9 +179,6 @@ user.post('/Register', (req, res) => {
             res.status(500).json({ error: "not fetch the file" })
         })
 })
-
-
-
 
 
 // updates user data
@@ -251,7 +203,6 @@ user.patch('/:id', (req, res) => {
         res.status(500).json({ error: "Not a valid doc id" })
     }
 })
-
 
 
 module.exports = user;

@@ -5,18 +5,10 @@ const { ObjectId } = require("mongodb")
 
 
 let topic = express.Router();
-
-
 let app = express();
 app.use(cors());
 app.use(express.json());
-
-
-
 let db;
-
-
-
 
 
 connectToDb((err) => {
@@ -27,7 +19,6 @@ connectToDb((err) => {
         db = getDb();
     }
 })
-
 
 
 // show all topics
@@ -48,9 +39,6 @@ topic.get('/', (req, res) => {
 })
 
 
-
-
-
 // count all topics
 topic.get('/countAllTopics', (req, res) => {
 
@@ -68,9 +56,6 @@ topic.get('/countAllTopics', (req, res) => {
 })
 
 
-
-
-
 // count all Topics user
 topic.get('/countTopicsUser/:id', (req, res) => {
 
@@ -86,9 +71,6 @@ topic.get('/countTopicsUser/:id', (req, res) => {
             res.status(500).json({ error: "not fetch the file" })
         })
 })
-
-
-
 
 
 topic.get('/:id', (req, res) => {
@@ -115,15 +97,9 @@ topic.get('/:id', (req, res) => {
 })
 
 
-
-
-
-
-
 topic.get('/CategoryTopic/:idCategory', (req, res) => {
 
     let topics = []
-
 
     db.collection('topics')
         .find({ codeCategory: (req.params.idCategory) })
@@ -135,18 +111,13 @@ topic.get('/CategoryTopic/:idCategory', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
-
 })
-
-
-
 
 
 // all topics user id
 topic.get('/PublishBy/:id', (req, res) => {
 
     let topics = []
-
 
     db.collection('topics')
         .find({ Publish_by: (req.params.id) })
@@ -162,12 +133,8 @@ topic.get('/PublishBy/:id', (req, res) => {
 })
 
 
-
-
-
 // here delete dopic id
 topic.delete('/:id', (req, res) => {
-
 
     if (ObjectId.isValid(req.params.id)) {
 
@@ -188,6 +155,18 @@ topic.delete('/:id', (req, res) => {
 })
 
 
+topic.delete('/deleteAllTopicsUser/:id', (req, res) => {
+
+    db.collection('topics')
+        .deleteMany({ Publish_by: (req.params.id) })
+
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            res.status(500).json({ error: "not fetch the file" })
+        })
+})
 
 
 // user add new topic
@@ -205,13 +184,6 @@ topic.post('/NewTopic', (req, res) => {
             res.status(500).json({ error: "not fetch the file" })
         })
 })
-
-
-
-
-
-
-
 
 
 module.exports = topic;

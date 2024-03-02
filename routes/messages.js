@@ -5,14 +5,9 @@ const { ObjectId } = require("mongodb")
 
 
 let MessageTopic = express.Router();
-
-
 let app = express();
 app.use(cors());
 app.use(express.json());
-
-
-
 let db;
 
 
@@ -24,11 +19,6 @@ connectToDb((err) => {
         db = getDb();
     }
 })
-
-
-
-
-
 
 
 MessageTopic.get('/', (req, res) => {
@@ -47,9 +37,6 @@ MessageTopic.get('/', (req, res) => {
         })
 })
 
-
-
-
 // count all messages user
 MessageTopic.get('/countMessagesUser/:id', (req, res) => {
 
@@ -65,9 +52,6 @@ MessageTopic.get('/countMessagesUser/:id', (req, res) => {
             res.status(500).json({ error: "not fetch the file" })
         })
 })
-
-
-
 
 // count all messages
 MessageTopic.get('/countMessagesAll', (req, res) => {
@@ -86,15 +70,9 @@ MessageTopic.get('/countMessagesAll', (req, res) => {
 })
 
 
-
-
-
-
-
 MessageTopic.get('/:idTopic', (req, res) => {
 
     let messages = []
-
 
     db.collection('messages')
         .find({ idTopicMessage: (req.params.idTopic) })
@@ -109,13 +87,9 @@ MessageTopic.get('/:idTopic', (req, res) => {
 })
 
 
-
-
-
 MessageTopic.get('/PublishBy/:id', (req, res) => {
 
     let messages = []
-
 
     db.collection('messages')
         .find({ Publish_by: (req.params.id) })
@@ -127,15 +101,43 @@ MessageTopic.get('/PublishBy/:id', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
+})
+
+
+// here delete all messages user
+MessageTopic.delete('/deleteAllCommentsUser/:id', (req, res) => {
+
+    db.collection('messages')
+        .deleteMany({ Publish_by: (req.params.id) })
+
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            res.status(500).json({ error: "not fetch the file" })
+        })
 
 })
 
 
+// here delete message idTopicMessage
+MessageTopic.delete('/deleteCommentsTopic/:id', (req, res) => {
+
+    db.collection('messages')
+        .deleteMany({ idTopicMessage: (req.params.id) })
+
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            res.status(500).json({ error: "not fetch the file" })
+        })
+
+})
 
 
 // here delete message id
-MessageTopic.delete('/:id', (req, res) => {
-
+MessageTopic.delete('/deleteComment/:id', (req, res) => {
 
     if (ObjectId.isValid(req.params.id)) {
 
@@ -149,14 +151,10 @@ MessageTopic.delete('/:id', (req, res) => {
                 res.status(500).json({ error: "not fetch the file" })
             })
     }
-
     else {
         res.status(500).json({ error: "Not a valid doc id" })
     }
 })
-
-
-
 
 
 // add new Message
@@ -174,12 +172,6 @@ MessageTopic.post('/NewMessage', (req, res) => {
             res.status(500).json({ error: "not fetch the file" })
         })
 })
-
-
-
-
-
-
 
 
 

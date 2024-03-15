@@ -1,14 +1,12 @@
-const express = require(`express`)//get,post we use now
+const express = require(`express`)
 const cors = require(`cors`)
-const http = require(`http`) // url
+const http = require(`http`)
 
 
 let app = express()
 app.use(cors())
 app.use(express.json())
 
-
-// app.use('/api/users', require('./routes/users'))
 
 app.use('/api/messages', require('./routes/messages'))
 app.use('/api/category', require('./routes/category'))

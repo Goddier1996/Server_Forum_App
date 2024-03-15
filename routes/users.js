@@ -22,6 +22,7 @@ connectToDb((err) => {
 })
 
 
+
 user.get('/', (req, res) => {
 
     let users = []
@@ -39,22 +40,6 @@ user.get('/', (req, res) => {
 })
 
 
-// count all users
-user.get('/countAllUsers', (req, res) => {
-
-    let users = []
-
-    db.collection('users')
-        .find()
-        .forEach(user => users.push(user))
-        .then(() => {
-            res.status(200).json(users.length)
-        })
-        .catch(() => {
-            res.status(500).json({ error: "not fetch the file" })
-        })
-})
-
 
 user.get('/:id', (req, res) => {
 
@@ -62,7 +47,6 @@ user.get('/:id', (req, res) => {
 
         db.collection('users')
             .findOne({ _id: ObjectId(req.params.id) })
-
             .then(doc => {
                 res.status(200).json(doc)
             })
@@ -70,19 +54,17 @@ user.get('/:id', (req, res) => {
                 res.status(500).json({ error: "not fetch the file" })
             })
     }
-
     else {
         res.status(500).json({ error: "Not a valid doc id" })
     }
 })
 
 
-// user forget password
+
 user.get('/forgetPassword/:Email', (req, res) => {
 
     db.collection('users')
         .findOne({ Email: req.params.Email })
-
         .then(doc => {
             res.status(200).json(doc)
         })
@@ -92,30 +74,26 @@ user.get('/forgetPassword/:Email', (req, res) => {
 })
 
 
-// find login for register if have this login , user cant register
+
 user.get('/FindLogin/:Login', (req, res) => {
 
     db.collection('users')
         .findOne({ Login: req.params.Login })
-
         .then(doc => {
             res.status(200).json(doc)
         })
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
-
 })
 
 
-// here delete user id
+
 user.delete('/:id', (req, res) => {
 
     if (ObjectId.isValid(req.params.id)) {
-
         db.collection('users')
             .deleteOne({ _id: ObjectId(req.params.id) })
-
             .then(result => {
                 res.status(200).json(result)
             })
@@ -129,7 +107,7 @@ user.delete('/:id', (req, res) => {
 })
 
 
-// connect login user or doctor,admin
+
 user.post('/login', (req, res) => {
 
     let Login = req.body.Login
@@ -137,7 +115,6 @@ user.post('/login', (req, res) => {
 
     db.collection('users')
         .findOne({ Login: Login, Password: Password })
-
         .then(result => {
             res.status(200).json(result)
         })
@@ -147,14 +124,13 @@ user.post('/login', (req, res) => {
 })
 
 
-// if user forget oassword , connect with email to change password
+
 user.post('/Forget', (req, res) => {
 
     let Email = req.body.Email
 
     db.collection('users')
         .findOne({ Email: Email })
-
         .then(result => {
             res.status(200).json(result)
         })
@@ -164,13 +140,11 @@ user.post('/Forget', (req, res) => {
 })
 
 
-// add new users
 user.post('/Register', (req, res) => {
 
     const user = req.body
 
     db.collection('users')
-
         .insertOne(user)
         .then(result => {
             res.status(201).json(result)
@@ -181,16 +155,14 @@ user.post('/Register', (req, res) => {
 })
 
 
-// updates user data
+
 user.patch('/:id', (req, res) => {
 
     const updates = req.body
 
     if (ObjectId.isValid(req.params.id)) {
-
         db.collection('users')
             .updateOne({ _id: ObjectId(req.params.id) }, { $set: updates })
-
             .then(result => {
                 res.status(200).json(result)
             })
@@ -198,7 +170,6 @@ user.patch('/:id', (req, res) => {
                 res.status(500).json({ error: "not fetch the file" })
             })
     }
-
     else {
         res.status(500).json({ error: "Not a valid doc id" })
     }

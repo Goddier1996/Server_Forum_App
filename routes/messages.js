@@ -37,37 +37,7 @@ MessageTopic.get('/', (req, res) => {
         })
 })
 
-// count all messages user
-MessageTopic.get('/countMessagesUser/:id', (req, res) => {
 
-    let allMessagesUser = []
-
-    db.collection('messages')
-        .find({ Publish_by: (req.params.id) })
-        .forEach(message => allMessagesUser.push(message))
-        .then(() => {
-            res.status(200).json(allMessagesUser.length)
-        })
-        .catch(() => {
-            res.status(500).json({ error: "not fetch the file" })
-        })
-})
-
-// count all messages
-MessageTopic.get('/countMessagesAll', (req, res) => {
-
-    let allMessagesUser = []
-
-    db.collection('messages')
-        .find()
-        .forEach(message => allMessagesUser.push(message))
-        .then(() => {
-            res.status(200).json(allMessagesUser.length)
-        })
-        .catch(() => {
-            res.status(500).json({ error: "not fetch the file" })
-        })
-})
 
 
 MessageTopic.get('/:idTopic', (req, res) => {
@@ -83,8 +53,8 @@ MessageTopic.get('/:idTopic', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
-
 })
+
 
 
 MessageTopic.get('/PublishBy/:id', (req, res) => {
@@ -104,7 +74,7 @@ MessageTopic.get('/PublishBy/:id', (req, res) => {
 })
 
 
-// here delete all messages user
+
 MessageTopic.delete('/deleteAllCommentsUser/:id', (req, res) => {
 
     db.collection('messages')
@@ -120,7 +90,7 @@ MessageTopic.delete('/deleteAllCommentsUser/:id', (req, res) => {
 })
 
 
-// here delete message idTopicMessage
+
 MessageTopic.delete('/deleteCommentsTopic/:id', (req, res) => {
 
     db.collection('messages')
@@ -132,11 +102,11 @@ MessageTopic.delete('/deleteCommentsTopic/:id', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
-
 })
 
 
-// here delete message id
+
+
 MessageTopic.delete('/deleteComment/:id', (req, res) => {
 
     if (ObjectId.isValid(req.params.id)) {
@@ -157,6 +127,7 @@ MessageTopic.delete('/deleteComment/:id', (req, res) => {
 })
 
 
+
 // add new Message
 MessageTopic.post('/NewMessage', (req, res) => {
 
@@ -172,7 +143,6 @@ MessageTopic.post('/NewMessage', (req, res) => {
             res.status(500).json({ error: "not fetch the file" })
         })
 })
-
 
 
 module.exports = MessageTopic;

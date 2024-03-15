@@ -21,7 +21,7 @@ connectToDb((err) => {
 })
 
 
-// show all topics
+
 topic.get('/', (req, res) => {
 
     let users = []
@@ -38,39 +38,6 @@ topic.get('/', (req, res) => {
         })
 })
 
-
-// count all topics
-topic.get('/countAllTopics', (req, res) => {
-
-    let topics = []
-
-    db.collection('topics')
-        .find()
-        .forEach(topic => topics.push(topic))
-        .then(() => {
-            res.status(200).json(topics.length)
-        })
-        .catch(() => {
-            res.status(500).json({ error: "not fetch the file" })
-        })
-})
-
-
-// count all Topics user
-topic.get('/countTopicsUser/:id', (req, res) => {
-
-    let allTopicsUser = []
-
-    db.collection('topics')
-        .find({ Publish_by: (req.params.id) })
-        .forEach(topic => allTopicsUser.push(topic))
-        .then(() => {
-            res.status(200).json(allTopicsUser.length)
-        })
-        .catch(() => {
-            res.status(500).json({ error: "not fetch the file" })
-        })
-})
 
 
 topic.get('/:id', (req, res) => {
@@ -89,12 +56,12 @@ topic.get('/:id', (req, res) => {
                 res.status(500).json({ error: "not fetch the file" })
             })
     }
-
     else {
         res.status(500).json({ error: "Not a valid doc id" })
     }
 
 })
+
 
 
 topic.get('/CategoryTopic/:idCategory', (req, res) => {
@@ -114,7 +81,7 @@ topic.get('/CategoryTopic/:idCategory', (req, res) => {
 })
 
 
-// all topics user id
+
 topic.get('/PublishBy/:id', (req, res) => {
 
     let topics = []
@@ -129,11 +96,10 @@ topic.get('/PublishBy/:id', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: "not fetch the file" })
         })
-
 })
 
 
-// here delete dopic id
+
 topic.delete('/:id', (req, res) => {
 
     if (ObjectId.isValid(req.params.id)) {
@@ -148,11 +114,11 @@ topic.delete('/:id', (req, res) => {
                 res.status(500).json({ error: "not fetch the file" })
             })
     }
-
     else {
         res.status(500).json({ error: "Not a valid doc id" })
     }
 })
+
 
 
 topic.delete('/deleteAllTopicsUser/:id', (req, res) => {
@@ -169,7 +135,7 @@ topic.delete('/deleteAllTopicsUser/:id', (req, res) => {
 })
 
 
-// user add new topic
+
 topic.post('/NewTopic', (req, res) => {
 
     const topic = req.body

@@ -10,12 +10,7 @@ let category = express.Router();
 let app = express();
 app.use(cors());
 app.use(express.json());
-
-
-
 let db;
-
-
 
 
 
@@ -27,8 +22,6 @@ connectToDb((err) => {
         db = getDb();
     }
 })
-
-
 
 
 
@@ -50,30 +43,6 @@ category.get('/', (req, res) => {
 
 
 
-
-
-// count all Categorys
-category.get('/countAllCategorys', (req, res) => {
-
-    let categorys = []
-
-    db.collection('category')
-        .find()
-        .sort({ title: 1 })
-        .forEach(category => categorys.push(category))
-        .then(() => {
-            res.status(200).json(categorys.length)
-        })
-        .catch(() => {
-            res.status(500).json({ error: "not fetch the file" })
-        })
-})
-
-
-
-
-
-
 category.post('/add', (req, res) => {
 
     const category = req.body
@@ -88,8 +57,6 @@ category.post('/add', (req, res) => {
             res.status(500).json({ error: "not fetch the file" })
         })
 })
-
-
 
 
 
@@ -109,7 +76,6 @@ category.delete('/:id', (req, res) => {
                 res.status(500).json({ error: "not fetch the file" })
             })
     }
-
     else {
         res.status(500).json({ error: "Not a valid doc id" })
     }
